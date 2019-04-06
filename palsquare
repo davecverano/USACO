@@ -1,0 +1,73 @@
+/*
+ID: verano.1
+TASK: palsquare
+LANG: C++                 
+*/
+/* LANG can be C++11 or C++14 for those more recent releases */
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+
+string convertnumberarray(vector<int> numberarray){
+	vector<char> newarray;
+	for(int i = 0;i<numberarray.size();i++){
+		if(numberarray[numberarray.size()-i-1]>=0&&numberarray[numberarray.size()-i-1]<=9){
+			newarray.push_back(char(numberarray[numberarray.size()-i-1])+'0');
+
+		}
+		else{
+			newarray.push_back(char('A'+numberarray[numberarray.size()-i-1]-10));
+		}
+	}
+	string newstring(newarray.begin(),newarray.end());
+	return newstring;
+}
+
+string convertbases(int number,int base){
+	
+	vector<int> newnumber;
+	
+	int power = 0;
+	while(pow(base,power+1)<number){
+		power++;
+	}
+	while(number!=0){
+		int remainder = number%base;
+		newnumber.push_back(remainder);
+		number = number/base;
+	}
+	string convertedarray = (convertnumberarray(newnumber));
+	return convertedarray;
+}
+
+int palendrome(string number){
+	for(int i = 0;i<number.length();i++){
+		if(number[i]!=number[number.length()-i-1]){
+			return 0;
+		}
+	}
+	return 1;
+}
+
+int main(){
+
+ofstream fout ("palsquare.out");
+ifstream fin ("palsquare.in");
+
+int base;
+fin >> base;
+
+	for(int i = 1;i<=300;i++){
+		string temp = convertbases(pow(i,2),base);
+		if(palendrome(temp)){
+			fout << convertbases(i,base) << " " << temp << endl;
+		}
+	}
+
+}
+
+
