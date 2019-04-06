@@ -1,0 +1,80 @@
+/*
+ID: verano.1
+TASK: beads
+LANG: C++                 
+*/
+/* LANG can be C++11 or C++14 for those more recent releases */
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <stack>
+using namespace std;
+
+int modulo(int number,int modulo){
+	if(number%modulo>=0){
+		return number%modulo;
+	}
+	else{
+		return modulo - ((-1*number)%modulo);
+	}
+}
+
+
+int main(){
+
+ofstream fout ("beads.out");
+ifstream fin ("beads.in");
+
+int biggestchain = 0;
+int beadlength;
+string necklace;
+
+fin >> beadlength;
+fin >> necklace;
+
+for(int i = 0;i<beadlength;i++){
+	int currentchain = 0;
+	char original = necklace[i];
+	/*
+	if(necklace[i] == 'b' && necklace[modulo(i-1,beadlength)] == 'w'){
+		necklace[modulo(i-1,beadlength)] = 'r';
+	}
+	else if(necklace[i] == 'r' && necklace[modulo(i-1,beadlength)] == 'w'){
+		necklace[modulo(i-1,beadlength)] = 'b';
+	}
+	*/
+	for(int j = 0;j<beadlength;j++){	
+		if(currentchain>=beadlength){
+			break;
+		}
+		if(necklace[modulo(i,beadlength)]==necklace[modulo(i+j,beadlength)]|| necklace[modulo(i+j,beadlength)]=='w'){
+			currentchain++;
+		}
+		else{
+			break;
+		}
+	}
+	for(int j = 0;j>-beadlength+2;j--){	
+		if(currentchain>=beadlength){
+			break;
+		}
+		if((necklace[i]!='w'&& necklace[modulo(i+j-1,beadlength)]!= necklace[i])){
+			currentchain++;
+		}
+		else{
+			break;
+		}
+	}
+	necklace[i] = original;
+	if(currentchain>biggestchain){
+		biggestchain = currentchain;
+	}
+}
+
+fout << biggestchain << endl;
+return 0;
+
+}
+
+
