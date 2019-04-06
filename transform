@@ -1,0 +1,108 @@
+/*
+ID: verano.1
+TASK: transform
+LANG: C++                 
+*/
+/* LANG can be C++11 or C++14 for those more recent releases */
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+using namespace std;
+
+
+int checksame(vector<string> image1, vector<string> image2){
+	for(int i = 0;i<image1.size();i++){
+		if(image1[i].compare(image2[i])!=0){
+			return 0;
+		}
+	}
+	return 1;
+}
+
+vector<string> turn90(vector<string> *image){
+    vector<char> imagestrips;
+	vector<string> newimage;
+	for(int i = 0;i<image->size();i++){
+		for(int j = 0;j<image->size();j++){
+			imagestrips.push_back(image->at(image->size()-1-j).at(i));
+		}
+		string temp(imagestrips.begin(),imagestrips.end());
+		newimage.push_back(temp);
+		imagestrips.clear();
+	}
+	image->clear();
+	*image = newimage;
+	return *image;
+}
+
+vector<string> reflect(vector<string> *image){
+	turn90(&(*image));
+	vector<char> imagestrips;
+	vector<string> newimage;
+	for(int i = 0;i<image->size();i++){
+		for(int j = 0;j<image->size();j++){
+			imagestrips.push_back(image->at(i).at(image->size()-1-j));
+		}
+		string temp(imagestrips.begin(),imagestrips.end());
+		newimage.push_back(temp);
+		imagestrips.clear();
+	}
+	image->clear();
+	*image = newimage;
+	return *image;
+}
+
+int main(){
+
+ofstream fout ("transform.out");
+ifstream fin ("transform.in");
+
+int imagesize;
+vector<string> image1;
+vector<string> image2;
+
+fin >> imagesize;
+
+for(int i = 0;i<imagesize;i++){
+	string buffer;
+	fin >> buffer;
+	image1.push_back(buffer);
+}
+
+for(int i = 0;i<imagesize;i++){
+	string buffer;
+	fin >> buffer;
+	image2.push_back(buffer);
+}
+
+if(checksame(image2,turn90(&image1))){
+	fout << 1 << endl;
+}
+
+else if(checksame(image2,turn90(&image1))){
+	fout << 2 << endl;
+}
+
+else if(checksame(image2,turn90(&image1))){
+	fout << 3 << endl;
+	
+}
+
+else if(checksame(image2,reflect(&image1))){
+	fout << 4 << endl;
+}
+
+else if(checksame(image2,turn90(&image1))|| checksame(image2,turn90(&image1))|| checksame(image2,turn90(&image1))){
+	fout << 5 << endl;
+}
+
+else if(checksame(image2,reflect(&image1))){
+	fout << 6 << endl;
+}
+
+else{
+	fout << 7 << endl;
+}
+
+}
