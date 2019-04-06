@@ -1,0 +1,108 @@
+/*
+ID: verano.1
+TASK: milk2
+LANG: C++                 
+*/
+/* LANG can be C++11 or C++14 for those more recent releases */
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+using namespace std;
+
+
+int main(){
+
+ofstream fout ("milk2.out");
+ifstream fin ("milk2.in");
+
+int numberofinputs;
+
+fin >> numberofinputs;
+
+vector<int> begintime;
+vector<int> endtime;
+
+for(int i = 0;i<numberofinputs;i++){
+	int time;
+	fin >> time;
+	begintime.push_back(time);
+	fin >> time;
+	endtime.push_back(time);
+}
+
+for(int i = 0;i<numberofinputs;i++){
+	int lowest = begintime[i];
+	int lowestpos = i;
+	int tempBegin = begintime[i];
+	int tempEnd = endtime[i];
+	for(int j = i+1;j<numberofinputs;j++){
+		if(begintime[j]<lowest){
+			lowest = begintime[j];
+			lowestpos = j;
+		}
+	}
+	begintime[i] = lowest;
+	begintime[lowestpos] = tempBegin;
+	endtime[i] = endtime[lowestpos];
+	endtime[lowestpos] = tempEnd;
+	
+}
+/*
+	
+for(int i = 0;i<numberofinputs;i++){
+	int greatestEnd = endtime[i];
+    int stoptime = 0;
+	for(int j = i+1;j<numberofinputs;j++){
+		if(begintime[j]<=greatestEnd&&endtime[j]>greatestEnd){
+			greatestEnd=endtime[j];
+		}
+		if(begintime[j]>greatestEnd){
+			stoptime = begintime[j]-greatestEnd;
+		}
+		
+	}
+	if(greatesttime<greatestEnd-begintime[i]){
+		greatesttime = greatestEnd-begintime[i];
+	}
+	if(stoptime>greateststop){
+		greateststop = stoptime;
+	}
+	
+}
+	cout << greatesttime << " " << greateststop << endl;
+
+return 0;
+
+}
+
+*/
+	int greatesttime = endtime[0]-begintime[0];
+	int greateststop = 0;
+	int stopposition = endtime[0];
+	int beginposition = begintime[0];
+	
+	
+for(int i = 1;i<numberofinputs;i++){
+		if(begintime[i]<=stopposition&&endtime[i]>stopposition){
+			stopposition=endtime[i];
+			if(greatesttime<stopposition-beginposition){
+		greatesttime=stopposition-beginposition;
+			}
+		}
+		else if(begintime[i]>stopposition){
+			beginposition = begintime[i];
+
+			if(greateststop<beginposition-stopposition){
+		greateststop = beginposition-stopposition;
+			}
+			stopposition = endtime[i];
+		}
+}		
+	
+
+	fout << greatesttime << " " << greateststop << endl;
+
+return 0;
+
+}
