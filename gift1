@@ -1,0 +1,72 @@
+/*
+ID: verano.1
+TASK: gift1
+LANG: C++                 
+*/
+/* LANG can be C++11 or C++14 for those more recent releases */
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+using namespace std;
+
+
+int main(){
+	
+	ofstream fout ("gift1.out");
+    ifstream fin ("gift1.in");
+	
+	int numberofpeople;
+	vector<int> money;
+	vector<string> nameofpeople;
+	vector<string> nameofrecievers;
+	string nameofgiver;
+	string name;
+	
+	fin  >> numberofpeople;
+	
+	for(int i=0;i<numberofpeople;i++){
+		money.push_back(0);
+		fin >> name;
+		nameofpeople.push_back(name);
+	}
+	
+	for(int i=0;i<numberofpeople;i++){
+		int recievers;
+		int giftamount;
+		fin >> nameofgiver;
+		fin >>  giftamount;
+		fin >> recievers;
+		if(recievers==0){
+			continue;
+		}
+		
+		for(int j=0;j<recievers;j++){
+			fin >> name;
+			nameofrecievers.push_back(name);
+	   }
+		
+		for(int j=0;j<recievers;j++){
+			for(int k=0;k<numberofpeople;k++){
+				if(nameofpeople[k].compare(nameofrecievers[j])==0){
+					money[k] = money[k] + giftamount/recievers;
+					break;
+				}
+			}
+			
+		}
+		
+		for(int j=0;j<numberofpeople;j++){
+			if(nameofgiver.compare(nameofpeople[j])==0){
+				money[j] = money[j]+(giftamount%recievers)-giftamount;
+			}
+		}
+
+		nameofrecievers.clear();
+	}
+
+	for(int i=0;i<numberofpeople;i++){
+		fout << nameofpeople[i] << " " << money[i] << endl;
+	}
+
+}
